@@ -67,7 +67,7 @@ task Clean -depends __VerifyConfiguration,CleanModule -description "deletes all 
 
 task Rebuild -depends Clean,Build -description "runs a clean build";
 
-task Package -depends PackageModule,PackageNuGet -description "assembles distributions in the source hive"
+task Package -depends PackageModule -description "assembles distributions in the source hive"
 
 # clean tasks
 
@@ -90,6 +90,7 @@ task PackageModule -depends CleanModule,Build,__CreateModulePackageDirectory -de
 	Copy-Item $moduleSource -container -recurse -Destination $mp -Force;
 	
 	# copy bins to module bin area
+    mkdir $bin -force | out-null;
 	get-targetOutputPath | ls | copy-item -dest $bin -recurse -force;
     
     $psd = get-content $psdFile;

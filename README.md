@@ -8,8 +8,6 @@ In addition, you can pipe input to and output from ScriptCS.
 
 You will need [psake 4.0](https://github.com/psake/psake) to build and install this module.
 
-You will need to [enable NuGet Package Restore](http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages) to build this module.
-
 The following PowerShell script will build the module and install it to your personal module area:
 
 	import-module psake;
