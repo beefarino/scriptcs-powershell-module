@@ -80,6 +80,7 @@
     <Compile Include="CmdletLogger.cs" />
     <Compile Include="CurrentCmdletContext.cs" />
     <Compile Include="CurrentCmdletScriptPack.cs" />
+    <Compile Include="CurrentLogger.cs" />
     <Compile Include="ICmdletContext.cs" />
     <Compile Include="InvokeScriptCsCmdlet.cs" />
     <Compile Include="NullCmdletContext.cs" />

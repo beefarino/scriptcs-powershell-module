@@ -31,8 +31,8 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
             });
 
             Assert.NotNull(results);
-            Assert.Equal(1, results.Count);
-            Assert.Equal(101, (int)results[0].BaseObject);
+            Assert.Equal(1, results.NotNull().Count());
+            Assert.Equal(101, (int)results.NotNull().First().BaseObject);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
 
             Assert.NotNull(results);
             Assert.Equal(1, results.Count);
-            Assert.IsType( typeof(CurrentCmdletContext), results.First().BaseObject );
+            Assert.IsType( typeof(CodeOwls.PowerShell.ScriptCS.CurrentCmdletContext), results.First().BaseObject );
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
             var results = Invoke("invoke-scriptcs -script 'var s = 1;'");
 
             Assert.NotNull(results);
-            Assert.Equal(0, results.Count);
+            Assert.Equal(0, results.NotNull().Count());
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
             var errors = InvokeForErrors("invoke-scriptcs -script '1+1'");
 
             Assert.NotNull(errors);
-            Assert.Equal(0, errors.Count);
+            Assert.Equal(0, errors.NotNull().Count());
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
             var errors = InvokeForErrors("invoke-scriptcs -script '1 + new object()'");
 
             Assert.NotNull(errors);
-            Assert.Equal(1, errors.Count);
+            Assert.Equal(1, errors.NotNull().Count());
         }
 
         [Fact]
@@ -78,7 +78,18 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
             var errors = InvokeForErrors("invoke-scriptcs -script 'sdf1zxcv ? this is not valid code'");
 
             Assert.NotNull(errors);
-            Assert.Equal(1, errors.Count);
+            Assert.Equal(1, errors.NotNull().Count());
+        }
+
+        [Fact]
+        public void ScriptCSThrownExceptionsBecomePowerShellErrors()
+        {
+            var errors =
+                InvokeForErrors(
+                    "invoke-scriptcs -script 'throw new ApplicationException(\"this is an exception thrown by ScriptCS\");'");
+            Assert.NotNull(errors);
+            Assert.Equal(1, errors.NotNull().Count());
+            Assert.True( errors[0].Exception.Message.Contains( "exception thrown by ScriptCS"));
         }
 
         Collection<PSObject> Invoke(string script)
@@ -114,7 +125,7 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
                     script.ToList().ForEach(s =>
                                                 {
                                                     ps.AddScript(s);
-                                                    ps.Invoke().Where( r=>null != r).ToList().ForEach(results.Add);
+                                                    ps.Invoke().ToList().ForEach(results.Add);
                                                 });
 
                     return results;
