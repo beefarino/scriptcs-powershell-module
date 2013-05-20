@@ -26,6 +26,10 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
         [Fact]
         public void CanPushCustomCmdletContext()
         {
+            var pack = new CurrentCmdletScriptPack();
+            var cmdletContext = pack.GetContext() as ScriptCS.CurrentCmdletContext;
+            Assert.NotNull(cmdletContext);
+
             var mock = new Mock<ICmdletContext>();
             mock.Setup(c => c.GetVariableValue("test"))
                    .Returns("ok")
@@ -33,14 +37,11 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
 
             ICmdletContext context = mock.Object;
 
-            var pack = new CurrentCmdletScriptPack();
-            var cmdletContext = pack.GetContext() as ScriptCS.CurrentCmdletContext;
-
-            Assert.NotNull(cmdletContext);
-
             object result = null;
+            Assert.Equal(cmdletContext, pack.GetContext());
             using (pack.CreateActiveCmdletSession(context))
             {
+                Assert.Equal<object>( context, pack.GetContext() );
                 result = cmdletContext.GetVariableValue("test");
             }
             
