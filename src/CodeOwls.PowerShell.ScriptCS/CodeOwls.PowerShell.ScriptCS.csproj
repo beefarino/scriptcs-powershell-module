@@ -78,13 +78,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CmdletLogger.cs" />
+    <Compile Include="Cmdlets\GetScriptCSSessionCmdlet.cs" />
+    <Compile Include="Cmdlets\InvokeScriptCSCmdlet.cs" />
+    <Compile Include="Cmdlets\NewScriptCSSessionCmdlet.cs" />
+    <Compile Include="Cmdlets\RemoveScriptCSSessionCmdlet.cs" />
+    <Compile Include="Cmdlets\SessionManagerExtensions.cs" />
     <Compile Include="CurrentCmdletContext.cs" />
     <Compile Include="CurrentCmdletScriptPack.cs" />
     <Compile Include="CurrentLogger.cs" />
     <Compile Include="ICmdletContext.cs" />
-    <Compile Include="InvokeScriptCsCmdlet.cs" />
     <Compile Include="NullCmdletContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sessions\IScriptCSSession.cs" />
+    <Compile Include="Sessions\ScriptCSSession.cs" />
+    <Compile Include="Sessions\ScriptCSSessionManager.cs" />
+    <Compile Include="Sessions\ScriptCSSessionMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
