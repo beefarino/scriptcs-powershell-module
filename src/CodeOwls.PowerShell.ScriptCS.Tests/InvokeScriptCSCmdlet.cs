@@ -10,7 +10,7 @@ using Xunit;
 
 namespace CodeOwls.PowerShell.ScriptCS.Tests
 {
-    public class InvokeScriptCSCmdlet
+    public class InvokeScriptCSCmdlet : ScriptCSCmdletTestBase
     {
         [Fact]
         public void CanExecuteScriptCSCode()
@@ -90,65 +90,6 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
             Assert.NotNull(errors);
             Assert.Equal(1, errors.NotNull().Count());
             Assert.True( errors[0].Exception.Message.Contains( "exception thrown by ScriptCS"));
-        }
-
-        Collection<PSObject> Invoke(string script)
-        {
-            using (var rs = System.Management.Automation.Runspaces.RunspaceFactory.CreateRunspace())
-            {
-                rs.Open();
-                using (var ps = System.Management.Automation.PowerShell.Create())
-                {
-                    ps.Runspace = rs;
-
-                    ps.AddScript("ls *.dll | import-module;").Invoke();
-                    ps.AddScript(script);
-
-                    var results = ps.Invoke();
-
-                    return results;
-                }
-            }
-        }
-
-        Collection<PSObject> Invoke(IEnumerable<string> script)
-        {
-            Collection<PSObject> results = new Collection<PSObject>();
-            using (var rs = System.Management.Automation.Runspaces.RunspaceFactory.CreateRunspace())
-            {
-                rs.Open();
-                using (var ps = System.Management.Automation.PowerShell.Create())
-                {
-                    ps.Runspace = rs;
-
-                    ps.AddScript("ls *.dll | import-module;").Invoke();
-                    script.ToList().ForEach(s =>
-                                                {
-                                                    ps.AddScript(s);
-                                                    ps.Invoke().ToList().ForEach(results.Add);
-                                                });
-
-                    return results;
-                }
-            }
-        }
-
-        PSDataCollection<ErrorRecord> InvokeForErrors(string script)
-        {
-            using (var rs = System.Management.Automation.Runspaces.RunspaceFactory.CreateRunspace())
-            {
-                rs.Open();
-                using (var ps = System.Management.Automation.PowerShell.Create())
-                {
-                    ps.Runspace = rs;
-
-                    ps.AddScript("ls *.dll | import-module;").Invoke();
-                    ps.AddScript(script);
-
-                    ps.Invoke();
-                    return ps.Streams.Error;
-                }
-            }
         }
     }
 }

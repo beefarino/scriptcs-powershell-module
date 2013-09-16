@@ -41,7 +41,7 @@ namespace CodeOwls.PowerShell.ScriptCS.Tests
             Assert.Equal(cmdletContext, pack.GetContext());
             using (pack.CreateActiveCmdletSession(context))
             {
-                Assert.Equal<object>( context, pack.GetContext() );
+                Assert.Equal<object>( context, cmdletContext.ActiveCmdletContext );
                 result = cmdletContext.GetVariableValue("test");
             }
             
