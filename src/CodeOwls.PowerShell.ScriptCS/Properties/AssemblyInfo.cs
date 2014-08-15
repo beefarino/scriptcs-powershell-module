@@ -26,5 +26,5 @@ using System.Reflection;
 
 [assembly: AssemblyProduct("Code Owls LLC PowerShell ScriptCS Cmdlets")]
 
-[assembly: AssemblyVersion("1.0.2.0")]
-[assembly: AssemblyFileVersion("1.0.2.0")]
+[assembly: AssemblyVersion("1.0.4.0")]
+[assembly: AssemblyFileVersion("1.0.4.0")]
